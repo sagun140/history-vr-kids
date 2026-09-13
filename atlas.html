@@ -1,0 +1,183 @@
+<title>Butterfly Atlas</title>
+<meta name="description" content="Slide two moments in history and follow the threads of cause and effect that connect them, anywhere on Earth.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;800&display=swap">
+<style>
+  :root {
+    --sea: #cfe5ea; --sea-line: #b4d3da; --land: #f5dd8f; --land-edge: #e2c46a;
+    --ground: #e9f2f3; --panel: #ffffff; --ink: #17243a; --muted: #55667a; --hair: #d6e1e6;
+    --then: #e8590c; --now: #1971c2; --thread: #d6336c; --dot: #6f7f8f;
+    --display: "Bagel Fat One", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+    --body: "Nunito", "Segoe UI", system-ui, sans-serif;
+    --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --sea: #0c1c2b; --sea-line: #16304a; --land: #243b50; --land-edge: #33506a;
+      --ground: #07121d; --panel: #102232; --ink: #e8f1f7; --muted: #9bb0c3; --hair: #213a50;
+      --then: #ff922b; --now: #4dabf7; --thread: #f06595; --dot: #7d93a8;
+    }
+  }
+  :root[data-theme="dark"] {
+    --sea: #0c1c2b; --sea-line: #16304a; --land: #243b50; --land-edge: #33506a;
+    --ground: #07121d; --panel: #102232; --ink: #e8f1f7; --muted: #9bb0c3; --hair: #213a50;
+    --then: #ff922b; --now: #4dabf7; --thread: #f06595; --dot: #7d93a8;
+  }
+
+  * { box-sizing: border-box; }
+  body { background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.45; padding-inline: 16px; padding-block: 14px 28px; }
+  button { font: inherit; color: inherit; cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--thread); outline-offset: 2px; }
+
+  .top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; max-width: 1440px; margin: 0 auto 12px; }
+  .brand { font-family: var(--display); font-size: clamp(28px, 4vw, 40px); line-height: 1; margin: 0; letter-spacing: .5px; }
+  .brand span { color: var(--thread); }
+  .lede { margin: 0; color: var(--muted); max-width: 60ch; }
+  .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; align-items: center; }
+  .presets b { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 800; }
+  .chip { border: 1.5px solid var(--hair); background: var(--panel); border-radius: 999px; padding: 4px 11px; font-weight: 700; font-size: 13px; }
+  .chip:hover { border-color: var(--thread); }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
+
+  .app { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 14px; max-width: 1440px; margin: 0 auto; align-items: start; }
+  .stage { display: grid; gap: 10px; min-width: 0; }
+  .mapwrap { position: relative; background: var(--sea); border-radius: 18px; overflow: hidden; }
+  #map { display: block; width: 100%; height: auto; }
+  .sphere { fill: var(--sea); }
+  .grat { fill: none; stroke: var(--sea-line); stroke-width: .6; }
+  .land { fill: var(--land); stroke: var(--land-edge); stroke-width: .6; }
+  .ev { fill: var(--dot); opacity: .35; cursor: pointer; transition: opacity .2s; }
+  .ev:hover { opacity: 1; }
+  .ev.in-a { fill: var(--then); opacity: .9; }
+  .ev.in-b { fill: var(--now); opacity: .9; }
+  .ev.ripple { opacity: 1; }
+  .thread { fill: none; stroke: var(--thread); stroke-width: 2.6; stroke-linecap: round; }
+  .thread.faint { opacity: .18; }
+  .thread.draw { animation: draw .7s ease-out forwards; }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  .node circle { stroke: var(--panel); stroke-width: 2; }
+  .node text { font-family: var(--mono); font-size: 11px; font-weight: 500; fill: #fff; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+  .node { cursor: pointer; }
+  .node.dim { opacity: .25; }
+  .tip { position: absolute; pointer-events: none; background: var(--panel); color: var(--ink); border-radius: 10px; padding: 6px 10px; font-size: 13px; box-shadow: 0 4px 16px rgb(0 0 0 / .18); max-width: 240px; transform: translate(-50%, calc(-100% - 12px)); }
+  .tip small { display: block; font-family: var(--mono); color: var(--muted); font-size: 11px; }
+  .legend { position: absolute; left: 12px; bottom: 10px; display: flex; gap: 12px; font-size: 12px; font-weight: 700; color: var(--ink); background: color-mix(in srgb, var(--panel) 80%, transparent); padding: 4px 10px; border-radius: 999px; }
+  .legend i { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 5px; vertical-align: -1px; }
+
+  .time { background: var(--panel); border-radius: 18px; padding: 12px 16px 10px; }
+  .timehead { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .era { font-family: var(--mono); font-size: 13px; font-variant-numeric: tabular-nums; }
+  .era b { font-family: var(--body); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; font-size: 11px; margin-right: 6px; }
+  .era.a b { color: var(--then); } .era.b b { color: var(--now); }
+  .size { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); font-weight: 700; }
+  .size input { accent-color: var(--thread); width: 110px; }
+  .track { position: relative; height: 58px; touch-action: none; user-select: none; }
+  .ticks { position: absolute; inset: 14px 0 20px; border-bottom: 1.5px solid var(--hair); }
+  .tick { position: absolute; bottom: 0; width: 1.5px; height: 12px; background: var(--dot); opacity: .45; }
+  .band { position: absolute; top: 4px; bottom: 18px; border-radius: 8px; cursor: grab; border: 2px solid; }
+  .band:active { cursor: grabbing; }
+  .band.a { border-color: var(--then); background: color-mix(in srgb, var(--then) 18%, transparent); }
+  .band.b { border-color: var(--now); background: color-mix(in srgb, var(--now) 18%, transparent); }
+  .band span { position: absolute; top: -2px; left: 50%; transform: translate(-50%, -60%); font-size: 11px; font-weight: 800; color: #fff; padding: 0 6px; border-radius: 6px; }
+  .band.a span { background: var(--then); } .band.b span { background: var(--now); }
+  .axis { position: absolute; left: 0; right: 0; bottom: 0; height: 16px; font-family: var(--mono); font-size: 10.5px; color: var(--muted); }
+  .axis span { position: absolute; transform: translateX(-50%); white-space: nowrap; }
+  .axis span:first-child { transform: none; } .axis span:last-child { transform: translateX(-100%); }
+
+  .panel { background: var(--panel); border-radius: 18px; padding: 18px 18px 16px; display: grid; gap: 14px; position: sticky; top: 12px; max-height: calc(100vh - 24px); overflow: auto; }
+  .eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0; }
+  .q { font-family: var(--display); font-weight: 400; font-size: 24px; line-height: 1.12; margin: 2px 0 0; text-wrap: balance; }
+  .q .a { color: var(--then); } .q .b { color: var(--now); }
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .tools .spacer { flex: 1; }
+  .btn { border: 1.5px solid var(--hair); background: transparent; border-radius: 10px; padding: 5px 10px; font-weight: 700; font-size: 13px; }
+  .btn:hover { border-color: var(--ink); }
+  .btn[aria-pressed="true"] { background: var(--thread); border-color: var(--thread); color: #fff; }
+  .btn:disabled { opacity: .4; cursor: default; }
+
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; }
+  .step { display: grid; grid-template-columns: 30px 1fr; column-gap: 10px; }
+  .num { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; color: #fff; font-family: var(--mono); font-size: 12px; font-weight: 500; }
+  .rail { grid-column: 1; justify-self: center; width: 2.5px; background: var(--thread); opacity: .5; }
+  .card h3 { margin: 1px 0 0; font-size: 16px; font-weight: 800; line-height: 1.2; }
+  .meta { font-family: var(--mono); font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .card p { margin: 4px 0 0; }
+  .why { grid-column: 2; margin: 6px 0 10px; font-size: 13.5px; color: var(--thread); font-weight: 700; }
+  .why::before { content: "so… "; font-family: var(--mono); font-weight: 500; opacity: .8; }
+  .step.hidden .card h3, .step.hidden .card p, .step.hidden .meta { filter: blur(6px); user-select: none; }
+  .reveal { margin-top: 4px; }
+  .step.dim { opacity: .28; }
+  .prompt { border-top: 1.5px dashed var(--hair); padding-top: 12px; font-size: 14px; }
+  .prompt b { display: block; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+  .empty { color: var(--muted); }
+  .list { list-style: none; padding: 0; margin: 4px 0 0; display: grid; gap: 4px; }
+  .list button { width: 100%; text-align: left; border: 0; background: transparent; padding: 4px 0; display: grid; grid-template-columns: 74px 1fr; gap: 8px; }
+  .list button:hover .t { color: var(--thread); }
+  .list .t { font-weight: 700; } .list .why2 { grid-column: 2; font-size: 13px; color: var(--muted); }
+  .stat { font-family: var(--display); font-size: 30px; line-height: 1; color: var(--thread); }
+
+  body.class-mode { font-size: 18px; }
+  body.class-mode .app { grid-template-columns: minmax(0, 1fr) 470px; }
+  body.class-mode .card h3 { font-size: 22px; }
+  body.class-mode .why { font-size: 17px; }
+  body.class-mode .q { font-size: 30px; }
+
+  @media (max-width: 960px) {
+    .app, body.class-mode .app { grid-template-columns: 1fr; }
+    .panel { position: static; max-height: none; }
+    .presets { margin-left: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) { .thread.draw { animation: none; stroke-dashoffset: 0 !important; } }
+</style>
+
+<header class="top">
+  <h1 class="brand">Butterfly<span>·</span>Atlas</h1>
+  <p class="lede">Nothing in history happens alone. Drag the two eras and follow the threads that tie them together, anywhere on Earth.</p>
+  <nav class="presets" aria-label="Example threads">
+    <b>Try</b>
+    <button class="chip" data-a="105" data-b="1969">Paper → the Moon</button>
+    <button class="chip" data-a="1815" data-b="1818">Volcano → Frankenstein</button>
+    <button class="chip" data-a="760" data-b="1776">Tea → a revolution</button>
+    <button class="chip" data-a="-2200" data-b="1545">Horses → silver</button>
+    <button class="chip" data-a="1849" data-b="1994">An essay → Mandela</button>
+  </nav>
+</header>
+
+<main class="app">
+  <section class="stage">
+    <div class="mapwrap" id="mapwrap">
+      <svg id="map" viewBox="0 0 1000 520" role="img" aria-label="World map of historical events and the threads between them">
+        <path class="sphere" id="sphere"></path>
+        <path class="grat" id="grat"></path>
+        <path class="land" id="land"></path>
+        <g id="dots"></g>
+        <g id="threads"></g>
+        <g id="nodes"></g>
+      </svg>
+      <div class="legend" aria-hidden="true"><span><i style="background:var(--then)"></i>Then</span><span><i style="background:var(--now)"></i>Now</span><span><i style="background:var(--thread)"></i>Thread</span></div>
+      <div class="tip" id="tip" hidden></div>
+    </div>
+
+    <div class="time">
+      <div class="timehead">
+        <div class="era a" id="eraA"></div>
+        <div class="era b" id="eraB"></div>
+        <label class="size" for="size">Era size <input type="range" id="size" min="0.02" max="0.2" step="0.005" value="0.05"></label>
+      </div>
+      <div class="track" id="track">
+        <div class="ticks" id="ticks"></div>
+        <div class="band a" id="bandA" role="slider" tabindex="0" aria-label="Then era"><span>THEN</span></div>
+        <div class="band b" id="bandB" role="slider" tabindex="0" aria-label="Now era"><span>NOW</span></div>
+        <div class="axis" id="axis"></div>
+      </div>
+    </div>
+  </section>
+
+  <aside class="panel" id="panel" aria-live="polite"></aside>
+</main>
+
+<script src="land.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>

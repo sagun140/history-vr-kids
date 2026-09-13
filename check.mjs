@@ -11,6 +11,10 @@ for (const l of LINKS) { const a = byId.get(l.from), b = byId.get(l.to);
   if (!a || !b) { fail(`link ${l.from} -> ${l.to}: unknown id`); continue; }
   if (a.y > b.y) fail(`link ${l.from} (${a.y}) -> ${l.to} (${b.y}) runs backwards in time`);
   const k = l.from + '>' + l.to; if (seen.has(k)) fail(`duplicate link ${k}`); seen.add(k); }
+globalThis.window.STORIES = undefined; new Function(fs.readFileSync(new URL('./stories.js', import.meta.url), 'utf8'))();
+for (const st of window.STORIES) for (let i = 0; st.ids && i < st.ids.length; i++) {
+  if (!byId.has(st.ids[i])) fail(`story ${st.id}: unknown id ${st.ids[i]}`);
+  else if (i && !LINKS.some(l => l.from === st.ids[i - 1] && l.to === st.ids[i])) fail(`story ${st.id}: no link ${st.ids[i - 1]} -> ${st.ids[i]}`); }
 const linked = new Set(LINKS.flatMap(l => [l.from, l.to]));
 console.log(`${EVENTS.length} events, ${LINKS.length} links, ${EVENTS.filter(e => !linked.has(e.id)).map(e => e.id).join(', ') || 'none'} unlinked`);
 process.exit(bad ? 1 : 0);
