@@ -1,0 +1,6 @@
+# Generated before every deploy by tools/make-pages.mjs — never committed, so it
+# can never go stale. Run it locally if you want to preview the event pages.
+e/
+sitemap.xml
+.vr-local.html
+.aframe-local.js
