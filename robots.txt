@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sagun140.github.io/history-vr-kids/sitemap.xml

@@ -1,8 +1,44 @@
 <title>Butterfly Atlas</title>
 <meta name="description" content="Picture stories of world history for kids: press the arrow keys and watch one event lead to the next.">
+<link rel="canonical" href="https://sagun140.github.io/history-vr-kids/">
+<meta name="theme-color" content="#0f1320">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Butterfly Atlas">
+<meta property="og:url" content="https://sagun140.github.io/history-vr-kids/">
+<meta property="og:title" content="Butterfly Atlas — world history as picture stories">
+<meta property="og:description" content="Picture stories of world history for kids: press the arrow keys and watch one event cause the next, with a photo, a line saying how, and a map of where it happened.">
+<meta property="og:image" content="https://sagun140.github.io/history-vr-kids/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Butterfly Atlas — world history as picture stories">
+<meta name="twitter:description" content="Picture stories of world history for kids: press the arrow keys and watch one event cause the next, with a photo, a line saying how, and a map of where it happened.">
+<meta name="twitter:image" content="https://sagun140.github.io/history-vr-kids/og.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Butterfly Atlas",
+  "url": "https://sagun140.github.io/history-vr-kids/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any browser",
+  "isAccessibleForFree": true,
+  "description": "World history as picture stories for kids: each slide causes the next, with a free-licensed photograph, the reason one led to the other, and a map showing where it moved.",
+  "audience": { "@type": "EducationalAudience", "educationalRole": ["student", "teacher"] },
+  "learningResourceType": ["slideshow", "interactive map", "timeline"],
+  "hasPart": [
+    { "@type": "WebApplication", "name": "Compare two eras", "url": "https://sagun140.github.io/history-vr-kids/atlas.html" },
+    { "@type": "Quiz", "name": "AP World History: Modern practice exam", "url": "https://sagun140.github.io/history-vr-kids/ap.html" },
+    { "@type": "WebApplication", "name": "Butterfly Atlas VR", "url": "https://sagun140.github.io/history-vr-kids/vr.html" }
+  ]
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;800&display=swap"></noscript>
 <style>
   /* One look on purpose: a dark classroom-projector room, so photos glow. */
   :root {
@@ -96,6 +132,8 @@
   <h1 class="brand">Butterfly<span>·</span>Atlas</h1>
   <nav class="stories" id="stories" aria-label="Choose a story"></nav>
   <a class="maplink" href="atlas.html">Compare two eras on the map →</a>
+  <a class="maplink" href="ap.html">AP practice kit →</a>
+  <a class="maplink" href="vr.html">In VR →</a>
 </header>
 
 <main>
