@@ -67,7 +67,8 @@ ${extra}
 const foot = `</div></body></html>`;
 
 const nav = `<nav class="row sitenav" aria-label="Site">
-  <a class="chip" href="../index.html">The atlas</a>
+  <a class="chip" href="../index.html">Picture stories</a>
+  <a class="chip" href="../atlas.html">The atlas</a>
   <a class="chip" href="../ap.html">AP practice kit</a>
   <a class="chip" href="../vr.html">VR for Quest</a>
   <a class="chip" href="./">All events</a>
@@ -115,13 +116,13 @@ ${nav}
 ${ds ? `<section class="card">
   <h2>The butterfly effect</h2>
   <p><span class="stat">${ds}</span> later events in this atlas trace back to ${esc(e.t)}, however long the chain.</p>
-  <p><a href="../index.html?event=${e.id}">Watch it ripple outward on the map →</a></p>
+  <p><a href="../atlas.html?event=${e.id}">Watch it ripple outward on the map →</a></p>
 </section>` : ''}
 
 <section class="card">
   <h2>Follow it yourself</h2>
   <div class="row">
-    <a class="chip" href="../index.html?event=${e.id}">See it on the map</a>
+    <a class="chip" href="../atlas.html?event=${e.id}">See it on the map</a>
     <a class="chip" href="../vr.html">Walk a thread in VR</a>
     ${units.map(u => `<a class="chip" href="../ap.html?unit=${u}">AP practice · Unit ${u}</a>`).join('')}
   </div>
@@ -147,13 +148,14 @@ ${nav}
 <section class="card"><ul>
 ${byEra.map(e => `<li><a href="${e.id}.html"><b>${esc(e.t)}</b></a> · ${esc(T.when(e))} · ${esc(e.p)}<span>${esc(e.s)}</span></li>`).join('\n')}
 </ul></section>
-<footer><p><a href="../index.html">Back to the map →</a></p></footer>
+<footer><p><a href="../atlas.html">Back to the map →</a></p></footer>
 ` + foot);
 
 // sitemap
 const stamp = fs.statSync(path.join(ROOT, 'data.js')).mtime.toISOString().slice(0, 10);
 const urls = [
-  { loc: BASE, pri: '1.0' }, { loc: BASE + 'ap.html', pri: '0.9' }, { loc: BASE + 'vr.html', pri: '0.9' },
+  { loc: BASE, pri: '1.0' }, { loc: BASE + 'atlas.html', pri: '0.9' },
+  { loc: BASE + 'ap.html', pri: '0.9' }, { loc: BASE + 'vr.html', pri: '0.9' },
   { loc: BASE + 'e/', pri: '0.7' },
   ...EVENTS.map(e => ({ loc: `${BASE}e/${e.id}.html`, pri: '0.6' })),
 ];

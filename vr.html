@@ -95,7 +95,8 @@
     </section>
 
     <nav class="row">
-      <a class="chip" href="index.html">Atlas on a flat screen</a>
+      <a class="chip" href="index.html">Picture stories</a>
+      <a class="chip" href="atlas.html">Atlas on a flat screen</a>
       <a class="chip" href="ap.html">AP practice kit</a>
       <a class="chip" href="https://github.com/sagun140/history-vr-kids">Source</a>
     </nav>
@@ -144,7 +145,7 @@
   // If the CDN is unreachable, say so plainly instead of showing a black page.
   window.addEventListener("load", () => {
     const n = document.getElementById("loadnote");
-    if (!window.AFRAME) n.innerHTML = 'The VR library did not load. This page needs <code>cdn.jsdelivr.net</code>. The <a href="index.html">flat atlas</a> works without it.';
+    if (!window.AFRAME) n.innerHTML = 'The VR library did not load. This page needs <code>cdn.jsdelivr.net</code>. The <a href="atlas.html">flat atlas</a> works without it.';
     else n.textContent = "VR library " + AFRAME.version + " ready.";
   });
 </script>

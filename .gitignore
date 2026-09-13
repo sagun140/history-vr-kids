@@ -4,3 +4,7 @@ e/
 sitemap.xml
 .vr-local.html
 .aframe-local.js
+
+# Picture fetching leftovers
+tools/fetch.log
+*.src

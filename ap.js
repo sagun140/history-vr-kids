@@ -117,7 +117,8 @@
           <button class="chip" data-go="report">Score report</button>
           <button class="chip" data-print="blank">Print the exam</button>
           <button class="chip" data-print="key">Print with answer key</button>
-          <a class="chip" href="index.html">Open the atlas</a>
+          <a class="chip" href="index.html">Open the picture stories</a>
+          <a class="chip" href="atlas.html">Open the atlas</a>
           <a class="chip" href="vr.html">Open in VR</a>
         </div>
         <p class="note" style="margin-top:8px">Nothing is uploaded anywhere. Your answers stay in this browser, and clearing site data clears them.</p>
@@ -139,7 +140,7 @@
     : `<p class="src">${esc(st.source)}</p><div class="stim quote">${esc(st.body)}</div>`;
 
   const atlasLinks = ids => !ids || !ids.length ? "" :
-    `<p style="margin-top:8px">${ids.filter(id => EV.has(id)).map(id => `<a class="atlas" href="index.html?event=${encodeURIComponent(id)}" target="_blank" rel="noopener">${esc(EV.get(id).t)} on the map</a>`).join(" · ")}</p>`;
+    `<p style="margin-top:8px">${ids.filter(id => EV.has(id)).map(id => `<a class="atlas" href="atlas.html?event=${encodeURIComponent(id)}" target="_blank" rel="noopener">${esc(EV.get(id).t)} on the map</a>`).join(" · ")}</p>`;
 
   // ----- Section I Part A -----
   function renderMCQ() {

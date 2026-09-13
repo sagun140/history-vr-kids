@@ -93,8 +93,8 @@ const pageErrors = () => errors.filter(e => !/fonts\.(googleapis|gstatic)|jsdeli
 
 // ---------- index.html ----------
 async function testAtlas() {
-  console.log('\nindex.html — the atlas');
-  await go(ORIGIN + '/index.html');
+  console.log('\natlas.html — the two-era map');
+  await go(ORIGIN + '/atlas.html');
   ok(await js('window.EVENTS.length') === 189, 'all 189 events loaded');
   ok(await js('document.querySelectorAll(".ev").length') === 189, 'a dot on the map for every event');
   ok(await js('!!window.THREADS && typeof THREADS.findChains === "function"'), 'the shared thread logic is in place');
@@ -102,15 +102,35 @@ async function testAtlas() {
   ok((await js('document.getElementById("panel").textContent')).length > 120, 'the side panel explains the thread');
   ok(/then=105/.test(await js('location.search')), 'the address bar carries the view', await js('location.search'));
   ok(await js('!!document.getElementById("copyLink")'), 'there is a copy-link button');
-  ok(await js('document.querySelectorAll(".sitenav a").length') === 3, 'nav links to the atlas, AP kit and VR');
+  ok(await js('document.querySelectorAll(".sitenav a").length') === 4, 'nav links to the stories, atlas, AP kit and VR');
 
-  await go(ORIGIN + '/index.html?event=gutenberg');
+  await go(ORIGIN + '/atlas.html?event=gutenberg');
   const panel = await js('document.getElementById("panel").textContent');
   ok(/Printing press/.test(panel), 'deep link ?event=gutenberg opens that event', panel.slice(0, 60));
   ok(/trace back to this/.test(panel), 'it shows how much traces back to it');
 
-  await go(ORIGIN + '/index.html?then=1815&now=1818');
+  await go(ORIGIN + '/atlas.html?then=1815&now=1818');
   ok(/Tambora|Frankenstein/.test(await js('document.getElementById("panel").textContent')), 'deep link ?then=&now= sets both eras');
+  ok(pageErrors().length === 0, 'no console errors', pageErrors());
+}
+
+// ---------- index.html (the picture slideshow) ----------
+async function testStories() {
+  console.log('\nindex.html — the picture stories');
+  await go(ORIGIN + '/index.html');
+  ok(await js('window.STORIES.length') >= 9, 'the stories are loaded', await js('window.STORIES.length'));
+  ok(await js('document.querySelectorAll("#stories [data-story]").length') >= 9, 'every story has a button');
+  ok((await js('document.getElementById("stage").textContent')).length > 40, 'the first slide renders');
+  const first = await js('document.getElementById("count").textContent');
+  await js(`document.getElementById("next").click()`);
+  await sleep(400);
+  ok(await js('document.getElementById("count").textContent') !== first, 'the arrow moves to the next picture', await js('document.getElementById("count").textContent'));
+  ok(/atlas\.html/.test(await js('document.body.innerHTML')), 'it points at the two-era map');
+  ok(/ap\.html/.test(await js('document.body.innerHTML')) && /vr\.html/.test(await js('document.body.innerHTML')), 'and at the AP kit and VR');
+  ok(await js('!!document.querySelector(\'link[rel="canonical"]\')'), 'it can be indexed and shared');
+
+  await go(ORIGIN + '/index.html#paper/3');
+  ok(/paper\/3/.test(await js('location.hash')), 'a slide has its own address');
   ok(pageErrors().length === 0, 'no console errors', pageErrors());
 }
 
@@ -263,6 +283,7 @@ async function testVR() {
 if (!CHROME) { console.log('- no Chrome found, skipping browser tests (set CHROME_PATH)'); process.exit(0); }
 try {
   await launch();
+  await testStories();
   await testAtlas();
   await testAP();
   await testVR();
