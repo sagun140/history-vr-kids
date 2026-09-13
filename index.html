@@ -1,44 +1,50 @@
 <title>Butterfly Atlas</title>
-<meta name="description" content="Slide two moments in history and follow the threads of cause and effect that connect them, anywhere on Earth.">
+<meta name="description" content="Slide two moments in history and follow the threads of cause and effect that connect them, anywhere on Earth. Free for classrooms, no sign-up.">
+<link rel="canonical" href="https://sagun140.github.io/history-vr-kids/">
+<meta name="theme-color" content="#17243a">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Butterfly Atlas">
+<meta property="og:url" content="https://sagun140.github.io/history-vr-kids/">
+<meta property="og:title" content="Butterfly Atlas — world history you can follow thread by thread">
+<meta property="og:description" content="Slide two moments in history and follow the threads of cause and effect that connect them, anywhere on Earth. Free for classrooms, no sign-up.">
+<meta property="og:image" content="https://sagun140.github.io/history-vr-kids/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Butterfly Atlas — world history you can follow thread by thread">
+<meta name="twitter:description" content="Slide two moments in history and follow the threads of cause and effect that connect them, anywhere on Earth. Free for classrooms, no sign-up.">
+<meta name="twitter:image" content="https://sagun140.github.io/history-vr-kids/og.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Butterfly Atlas",
+  "url": "https://sagun140.github.io/history-vr-kids/",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any browser",
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "A world history atlas for kids and teachers. Pick a moment in the past and a moment later on, and the atlas traces the chains of cause and effect between them.",
+  "audience": { "@type": "EducationalAudience", "educationalRole": ["student", "teacher"] },
+  "educationalLevel": "primary and secondary",
+  "learningResourceType": ["interactive map", "timeline"],
+  "license": "https://github.com/sagun140/history-vr-kids"
+}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;800&display=swap"></noscript>
+<link rel="stylesheet" href="theme.css">
 <style>
-  :root {
-    --sea: #cfe5ea; --sea-line: #b4d3da; --land: #f5dd8f; --land-edge: #e2c46a;
-    --ground: #e9f2f3; --panel: #ffffff; --ink: #17243a; --muted: #55667a; --hair: #d6e1e6;
-    --then: #e8590c; --now: #1971c2; --thread: #d6336c; --dot: #6f7f8f;
-    --display: "Bagel Fat One", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
-    --body: "Nunito", "Segoe UI", system-ui, sans-serif;
-    --mono: "DM Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --sea: #0c1c2b; --sea-line: #16304a; --land: #243b50; --land-edge: #33506a;
-      --ground: #07121d; --panel: #102232; --ink: #e8f1f7; --muted: #9bb0c3; --hair: #213a50;
-      --then: #ff922b; --now: #4dabf7; --thread: #f06595; --dot: #7d93a8;
-    }
-  }
-  :root[data-theme="dark"] {
-    --sea: #0c1c2b; --sea-line: #16304a; --land: #243b50; --land-edge: #33506a;
-    --ground: #07121d; --panel: #102232; --ink: #e8f1f7; --muted: #9bb0c3; --hair: #213a50;
-    --then: #ff922b; --now: #4dabf7; --thread: #f06595; --dot: #7d93a8;
-  }
-
-  * { box-sizing: border-box; }
-  body { background: var(--ground); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.45; padding-inline: 16px; padding-block: 14px 28px; }
-  button { font: inherit; color: inherit; cursor: pointer; }
-  :focus-visible { outline: 3px solid var(--thread); outline-offset: 2px; }
-
   .top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; max-width: 1440px; margin: 0 auto 12px; }
   .brand { font-family: var(--display); font-size: clamp(28px, 4vw, 40px); line-height: 1; margin: 0; letter-spacing: .5px; }
   .brand span { color: var(--thread); }
   .lede { margin: 0; color: var(--muted); max-width: 60ch; }
   .presets { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; align-items: center; }
   .presets b { font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 800; }
-  .chip { border: 1.5px solid var(--hair); background: var(--panel); border-radius: 999px; padding: 4px 11px; font-weight: 700; font-size: 13px; }
-  .chip:hover { border-color: var(--thread); }
-  .chip[aria-pressed="true"] { background: var(--ink); color: var(--panel); border-color: var(--ink); }
 
   .app { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 14px; max-width: 1440px; margin: 0 auto; align-items: start; }
   .stage { display: grid; gap: 10px; min-width: 0; }
@@ -92,10 +98,6 @@
   .tabs { display: flex; flex-wrap: wrap; gap: 6px; }
   .tools { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
   .tools .spacer { flex: 1; }
-  .btn { border: 1.5px solid var(--hair); background: transparent; border-radius: 10px; padding: 5px 10px; font-weight: 700; font-size: 13px; }
-  .btn:hover { border-color: var(--ink); }
-  .btn[aria-pressed="true"] { background: var(--thread); border-color: var(--thread); color: #fff; }
-  .btn:disabled { opacity: .4; cursor: default; }
 
   .steps { list-style: none; margin: 0; padding: 0; display: grid; }
   .step { display: grid; grid-template-columns: 30px 1fr; column-gap: 10px; }
@@ -142,6 +144,12 @@
     <button class="chip" data-a="760" data-b="1776">Tea → a revolution</button>
     <button class="chip" data-a="-2200" data-b="1545">Horses → silver</button>
     <button class="chip" data-a="1849" data-b="1994">An essay → Mandela</button>
+    <button class="chip" id="copyLink" title="Copy a link to exactly this view">Copy link</button>
+  </nav>
+  <nav class="sitenav" aria-label="Site" style="flex-basis:100%">
+    <a class="chip" href="index.html" aria-current="page">Atlas</a>
+    <a class="chip" href="ap.html">AP practice kit</a>
+    <a class="chip" href="vr.html">VR for Quest</a>
   </nav>
 </header>
 
@@ -180,4 +188,5 @@
 
 <script src="land.js"></script>
 <script src="data.js"></script>
+<script src="threads.js"></script>
 <script src="app.js"></script>
