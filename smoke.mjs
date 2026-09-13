@@ -232,6 +232,13 @@ async function testVR() {
   ok(await js(`${c}.pinPos.length`) === 189, 'every event has a place on the table');
   ok(await js(`Math.abs(${c}.pinPos[${await js('window.EVENTS.findIndex(e => e.id === "rome")')}].x) < 0.2`), 'Rome lands near the middle of the map');
 
+  // a headset never composites the DOM, so instructions have to exist in the scene
+  ok(await js(`!!${c}.hudMesh`), 'the HUD line exists inside the scene, not only in the page');
+  ok(await js(`${c}.hudMesh.parent === document.getElementById("camera").object3D`), 'and it is in view wherever you look');
+  await js(`${c}.sayHud("test line")`);
+  ok(await js(`${c}.hudText`) === 'test line', 'saying something updates it');
+  ok(await js(`${c}.hudMesh.material.opacity`) === 1, 'and brings it back to full strength');
+
   await js(`${c}.openEvent(window.EVENTS.findIndex(e => e.id === "gutenberg"))`);
   ok(await js(`${c}.state.focus`) === 'gutenberg', 'pointing at a dot opens that event');
 

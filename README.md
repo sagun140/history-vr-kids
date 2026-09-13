@@ -60,7 +60,7 @@ Everything lives in `data.js`: add an event with `ev(...)`, connect it with `ln(
 
 Questions live in `apdata.js`: add a set with `set(id, unit, st(source, body), q(...), q(...))`, then run `node apcheck.mjs`. Write the choices in whatever order reads best — the order is shuffled deterministically per question so the answer key stays evenly spread across A/B/C/D without anyone planning it.
 
-The atlas holds 189 events and 209 links: a starting set, not all of history. Links are simplified for kids; several are marked as debated in their wording ("some historians think").
+The atlas holds 189 events and 209 links: a starting set, not all of history. Links are simplified for kids. Exactly one of the 209 is currently worded as contested ("some historians link this to…") — marking the others that deserve it is real work still to do, and worth doing before anyone treats a thread as settled fact.
 
 ## Checks
 

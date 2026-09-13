@@ -73,6 +73,18 @@
     return c;
   }
 
+  function hudCanvas(text) {
+    const W = 1024, H = 128, c = canvas(W, H), g = c.getContext("2d");
+    g.fillStyle = "rgba(16,34,50,.92)"; g.beginPath(); g.roundRect(0, 0, W, H, 64); g.fill();
+    g.strokeStyle = C.hair; g.lineWidth = 5; g.beginPath(); g.roundRect(3, 3, W - 6, H - 6, 62); g.stroke();
+    g.fillStyle = INK; g.font = `600 40px ${FONT}`; g.textAlign = "center";
+    let t = String(text);
+    while (g.measureText(t).width > W - 80 && t.length > 8) t = t.slice(0, -2);
+    if (t !== text) t = t.slice(0, -1) + "…";
+    g.fillText(t, W / 2, 78);
+    return c;
+  }
+
   function buttonCanvas(label, sub, accent) {
     const W = 512, H = 160, c = canvas(W, H), g = c.getContext("2d");
     g.fillStyle = C.panel; g.beginPath(); g.roundRect(0, 0, W, H, 34); g.fill();
@@ -129,6 +141,7 @@
       this.buildConsole();
       this.buildPresets();
       this.buildCard();
+      this.buildHud();
       this.corridor = document.getElementById("corridor").object3D;
 
       this.recompute();
@@ -256,6 +269,20 @@
       host.add(mesh);
       this.card = mesh;
       this.cardHost = host;
+    },
+
+    // The page's own HUD is a DOM element, and a headset never composites the
+    // DOM: in VR that line is invisible exactly where there is no other
+    // feedback. So the same words also go on a small panel low in the view.
+    buildHud() {
+      const mesh = planeMesh(hudCanvas("Point at a dot"), 0.62, 0.62 * 128 / 1024);
+      mesh.position.set(0, -0.33, -1.05);
+      mesh.rotation.x = 0.24;
+      mesh.renderOrder = 10;
+      mesh.material.depthTest = false;
+      document.getElementById("camera").object3D.add(mesh);
+      this.hudMesh = mesh;
+      this.hudFade = 0;
     },
 
     // ---------- state changes ----------
@@ -469,10 +496,21 @@
       u.rate = 0.95; u.pitch = 1.05;
       speechSynthesis.speak(u);
     },
-    sayHud(msg) { if (this.hud) this.hud.textContent = msg; },
+    sayHud(msg) {
+      this.hudText = msg;
+      if (this.hud) this.hud.textContent = msg;
+      if (this.hudMesh) { retexture(this.hudMesh, hudCanvas(msg)); this.hudMesh.material.opacity = 1; this.hudFade = 0; }
+    },
 
     // ---------- per frame ----------
     tick(time, dt) {
+      // the HUD line dims once it has had time to be read, but never leaves
+      if (this.hudMesh) {
+        this.hudFade += (dt || 16) / 1000;
+        const m = this.hudMesh.material;
+        m.transparent = true;
+        m.opacity = this.hudFade < 7 ? 1 : Math.max(0.28, 1 - (this.hudFade - 7) / 3);
+      }
       // grow the threads in, one link after another
       if (this.grow && this.grow.length) {
         const step = (dt || 16) / 700;
