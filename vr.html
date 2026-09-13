@@ -1,0 +1,155 @@
+<title>Butterfly Atlas VR — history you can stand inside</title>
+<meta name="description" content="Stand at a world history map the size of a table in VR. Pick two moments and watch the threads of cause and effect rise off the map, then walk the chain event by event. Runs in the Meta Quest browser.">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<link rel="canonical" href="https://sagun140.github.io/history-vr-kids/vr.html">
+<meta name="theme-color" content="#17243a">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="site.webmanifest">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Butterfly Atlas">
+<meta property="og:url" content="https://sagun140.github.io/history-vr-kids/vr.html">
+<meta property="og:title" content="Butterfly Atlas VR — walk a chain of history in a Meta Quest">
+<meta property="og:description" content="Stand at a world history map the size of a table in VR. Pick two moments and watch the threads of cause and effect rise off the map, then walk the chain event by event. Runs in the Meta Quest browser.">
+<meta property="og:image" content="https://sagun140.github.io/history-vr-kids/og-vr.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Butterfly Atlas VR — walk a chain of history in a Meta Quest">
+<meta name="twitter:description" content="Stand at a world history map the size of a table in VR. Pick two moments and watch the threads of cause and effect rise off the map, then walk the chain event by event. Runs in the Meta Quest browser.">
+<meta name="twitter:image" content="https://sagun140.github.io/history-vr-kids/og-vr.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Butterfly Atlas VR",
+  "url": "https://sagun140.github.io/history-vr-kids/vr.html",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Meta Quest Browser, any WebXR browser",
+  "isAccessibleForFree": true,
+  "browserRequirements": "WebXR over HTTPS",
+  "description": "A WebXR history atlas: a map table you stand at, chains of cause and effect arcing above it in three dimensions, and a corridor you walk one event at a time.",
+  "audience": { "@type": "EducationalAudience", "educationalRole": ["student", "teacher"] }
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;800&display=swap" media="print" onload="this.media='all'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Mono:wght@400;500&family=Nunito:wght@400;600;800&display=swap"></noscript>
+<link rel="stylesheet" href="theme.css">
+<style>
+  body { margin: 0; padding: 0; overflow: hidden; }
+  .overlay { position: fixed; inset: 0; z-index: 10; overflow: auto; background: var(--ground); padding: 18px 16px 80px; }
+  .overlay.gone { display: none; }
+  .sheet { max-width: 760px; margin: 0 auto; display: grid; gap: 14px; }
+  .brand { font-family: var(--display); font-size: clamp(28px, 5vw, 44px); line-height: 1; margin: 0; }
+  .brand span { color: var(--thread); }
+  .lede { margin: 0; color: var(--muted); font-size: 17px; }
+  .card { background: var(--panel); border-radius: 18px; padding: 16px 18px; }
+  .card h2 { font-family: var(--display); font-weight: 400; font-size: 21px; margin: 0 0 6px; }
+  ol, ul { margin: 0; padding-left: 20px; }
+  li { margin: 3px 0; }
+  .go { font-family: var(--display); font-size: 20px; border: 0; border-radius: 14px; padding: 12px 20px; background: var(--thread); color: #fff; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  code { font-family: var(--mono); background: color-mix(in srgb, var(--ink) 8%, transparent); padding: 1px 5px; border-radius: 5px; font-size: .92em; }
+  .warn { border-left: 4px solid var(--then); padding-left: 12px; }
+  a { color: var(--thread); }
+  #hud { position: fixed; left: 50%; transform: translateX(-50%); bottom: 14px; z-index: 9; background: color-mix(in srgb, var(--panel) 88%, transparent); border-radius: 999px; padding: 7px 14px; font-family: var(--mono); font-size: 12.5px; color: var(--ink); display: none; }
+  #hud.on { display: block; }
+</style>
+
+<div class="overlay" id="overlay">
+  <div class="sheet">
+    <h1 class="brand">Butterfly<span>·</span>Atlas <span style="font-family:var(--body);font-size:16px;font-weight:800;letter-spacing:.1em">VR</span></h1>
+    <p class="lede">Stand at a world map the size of a table. Pick a moment in the past and a moment later on, and the threads of cause and effect lift off the map in front of you. Then walk the chain, one event at a time, into the dark.</p>
+
+    <div class="row">
+      <button class="go" id="enter">Start on this screen</button>
+      <span class="note">Then press <b>Enter VR</b> (bottom right) in a headset.</span>
+    </div>
+
+    <section class="card">
+      <h2>On a Meta Quest</h2>
+      <ol>
+        <li>Open the <b>Browser</b> app in the headset.</li>
+        <li>Go to this page's <b>https://</b> address. WebXR needs a secure connection — a <code>file://</code> copy will show the map but cannot enter VR.</li>
+        <li>Tap <b>Enter VR</b>, then allow the room permission if asked.</li>
+        <li>Point with either controller. Hand tracking works too: point and pinch.</li>
+      </ol>
+      <p class="note" style="margin-top:8px">Tested target: Quest 2, 3 and Pro in Quest Browser. Also runs in any WebXR browser, and on a plain laptop with mouse and the <code>W A S D</code> keys.</p>
+    </section>
+
+    <section class="card">
+      <h2>What to do in there</h2>
+      <ul>
+        <li><b>Point at a dot</b> — a card appears with the year, the place and what happened. Bigger dots changed more of what came after.</li>
+        <li><b>Tap a preset</b> on the left panel — paper to the Moon, a volcano to Frankenstein — and watch the thread draw itself across the map.</li>
+        <li><b>Tap the timeline</b> on the near edge of the table to move the orange <b>Then</b> marker or the blue <b>Now</b> marker.</li>
+        <li><b>Walk the thread</b> — the map fades and the chain becomes a corridor of events stretching away from you. Step through it link by link.</li>
+        <li><b>Read aloud</b> — turn narration on and each card is spoken.</li>
+      </ul>
+    </section>
+
+    <section class="card warn">
+      <h2>Comfort</h2>
+      <p class="note">There is no flying and no forced movement: you stand still and the world comes to you, and walking the thread snaps from station to station rather than sliding. If you feel off, look at the floor grid for a moment or press the headset's recenter.</p>
+    </section>
+
+    <nav class="row">
+      <a class="chip" href="index.html">Atlas on a flat screen</a>
+      <a class="chip" href="ap.html">AP practice kit</a>
+      <a class="chip" href="https://github.com/sagun140/history-vr-kids">Source</a>
+    </nav>
+    <p class="note" id="loadnote">Loading the VR library…</p>
+  </div>
+</div>
+
+<div id="hud"></div>
+
+<a-scene id="scene"
+  background="color: #07121d"
+  fog="type: linear; color: #07121d; near: 6; far: 16"
+  renderer="colorManagement: true; antialias: true; highRefreshRate: true"
+  webxr="requiredFeatures: local-floor; optionalFeatures: hand-tracking,bounded-floor"
+  atlas>
+
+  <a-entity light="type: ambient; color: #8fa8c0; intensity: 0.75"></a-entity>
+  <a-entity light="type: directional; color: #fff6e0; intensity: 0.55" position="1.5 3 1"></a-entity>
+
+  <!-- floor: a faint grid so the room has a horizon -->
+  <a-plane class="floor" rotation="-90 0 0" position="0 0 0" width="30" height="30"
+    material="color: #0b1a28; shader: flat"></a-plane>
+  <a-entity id="grid"></a-entity>
+
+  <!-- the map table and everything on it -->
+  <a-entity id="table" position="0 0.92 -0.85"></a-entity>
+  <a-entity id="console" position="0 0.95 -0.28" rotation="-52 0 0"></a-entity>
+  <a-entity id="presets" position="-1.02 1.28 -0.62" rotation="0 38 0"></a-entity>
+  <a-entity id="cardholder" position="0 1.45 -0.85"></a-entity>
+  <a-entity id="corridor" visible="false"></a-entity>
+
+  <a-entity id="rig" position="0 0 0">
+    <a-entity id="camera" camera="fov: 72" look-controls="pointerLockEnabled: false" wasd-controls="acceleration: 18" position="0 1.6 0">
+      <a-entity id="gaze" cursor="rayOrigin: mouse; fuse: false" raycaster="objects: .ui; far: 12"></a-entity>
+    </a-entity>
+    <a-entity id="rhand" laser-controls="hand: right" raycaster="objects: .ui; far: 12; lineColor: #f06595; lineOpacity: 0.75"></a-entity>
+    <a-entity id="lhand" laser-controls="hand: left" raycaster="objects: .ui; far: 12; lineColor: #f06595; lineOpacity: 0.5"></a-entity>
+    <a-entity id="rhandtrack" hand-tracking-controls="hand: right; modelColor: #f3d9a4"
+      raycaster="objects: .ui; far: 12" cursor="fuse: false; downEvents: pinchstarted; upEvents: pinchended"></a-entity>
+    <a-entity id="lhandtrack" hand-tracking-controls="hand: left; modelColor: #f3d9a4"
+      raycaster="objects: .ui; far: 12" cursor="fuse: false; downEvents: pinchstarted; upEvents: pinchended"></a-entity>
+  </a-entity>
+</a-scene>
+
+<script>
+  // If the CDN is unreachable, say so plainly instead of showing a black page.
+  window.addEventListener("load", () => {
+    const n = document.getElementById("loadnote");
+    if (!window.AFRAME) n.innerHTML = 'The VR library did not load. This page needs <code>cdn.jsdelivr.net</code>. The <a href="index.html">flat atlas</a> works without it.';
+    else n.textContent = "VR library " + AFRAME.version + " ready.";
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/aframe@1.8.0/dist/aframe-master.min.js"></script>
+<script src="land.js"></script>
+<script src="data.js"></script>
+<script src="threads.js"></script>
+<script src="vr.js"></script>
