@@ -1,0 +1,115 @@
+<!-- Social cards, drawn from the real map data so they need no webfonts.
+     Rendered to PNG by tools/make-og.mjs: cards.html?card=atlas|ap|vr|icon -->
+<title>Butterfly Atlas cards</title>
+<style>
+  html, body { margin: 0; padding: 0; background: #07121d; overflow: hidden; }
+  canvas { display: block; }
+</style>
+<canvas id="c"></canvas>
+<script src="../land.js"></script>
+<script src="../data.js"></script>
+<script src="../threads.js"></script>
+<script>
+  const which = new URLSearchParams(location.search).get("card") || "atlas";
+  const SIZE = { atlas: [1200, 630], ap: [1200, 630], vr: [1200, 630], icon: [512, 512] }[which];
+  const c = document.getElementById("c"), g = c.getContext("2d");
+  c.width = SIZE[0]; c.height = SIZE[1];
+  const MAP = window.MAP, T = window.THREADS;
+  const SANS = 'system-ui, "Segoe UI", "DejaVu Sans", Arial, sans-serif';
+  const project = (lon, lat) => {
+    const l = lon * Math.PI / 180, p = lat * Math.PI / 180, p2 = p * p, p4 = p2 * p2;
+    const x = l * (0.8707 - 0.131979 * p2 + p4 * (-0.013791 + p4 * (0.003971 * p2 - 0.001529 * p4)));
+    const y = p * (1.007226 + p2 * (0.015085 + p4 * (-0.044475 + 0.028874 * p2 - 0.005916 * p4)));
+    return [MAP.tx + MAP.k * x, MAP.ty - MAP.k * y];
+  };
+
+  function drawMap(x0, y0, w, alpha) {
+    const s = w / MAP.w;
+    g.save(); g.translate(x0, y0); g.scale(s, s); g.globalAlpha = alpha;
+    g.fillStyle = "#102a40"; g.fill(new Path2D(MAP.sphere));
+    g.strokeStyle = "rgba(150,195,225,.22)"; g.lineWidth = 0.8; g.stroke(new Path2D(MAP.grat));
+    g.fillStyle = "#f5dd8f"; g.fill(new Path2D(MAP.land));
+    g.restore();
+    return s;
+  }
+
+  function drawThread(x0, y0, s, chain, alpha) {
+    const pt = id => { const e = T.byId.get(id); const [x, y] = project(e.lon, e.lat); return [x0 + x * s, y0 + y * s]; };
+    g.save(); g.globalAlpha = alpha; g.strokeStyle = "#f06595"; g.lineWidth = 5; g.lineCap = "round";
+    for (let i = 0; i < chain.length - 1; i++) {
+      const [x1, y1] = pt(chain[i]), [x2, y2] = pt(chain[i + 1]);
+      const d = Math.hypot(x2 - x1, y2 - y1);
+      g.beginPath(); g.moveTo(x1, y1);
+      g.quadraticCurveTo((x1 + x2) / 2, (y1 + y2) / 2 - Math.max(24, d * .3), x2, y2); g.stroke();
+    }
+    chain.forEach((id, i) => {
+      const [x, y] = pt(id);
+      g.beginPath(); g.arc(x, y, i === 0 || i === chain.length - 1 ? 13 : 9, 0, 7);
+      g.fillStyle = i === 0 ? "#ff922b" : i === chain.length - 1 ? "#4dabf7" : "#f06595"; g.fill();
+      g.strokeStyle = "#07121d"; g.lineWidth = 3; g.stroke();
+    });
+    g.restore();
+  }
+
+  function butterfly(cx, cy, r) {
+    g.save(); g.translate(cx, cy); g.scale(r / 32, r / 32);
+    g.fillStyle = "#f5dd8f";
+    g.beginPath(); g.moveTo(0, -8); g.bezierCurveTo(-26, -34, -44, -6, -20, 10); g.bezierCurveTo(-8, 16, -2, 6, 0, -8); g.fill();
+    g.save(); g.scale(-1, 1);
+    g.beginPath(); g.moveTo(0, -8); g.bezierCurveTo(-26, -34, -44, -6, -20, 10); g.bezierCurveTo(-8, 16, -2, 6, 0, -8); g.fill();
+    g.restore();
+    g.strokeStyle = "#d6336c"; g.lineWidth = 5; g.lineCap = "round";
+    g.beginPath(); g.moveTo(0, -16); g.lineTo(0, 26); g.stroke();
+    g.fillStyle = "#e8590c"; g.beginPath(); g.arc(-22, -4, 4.5, 0, 7); g.arc(22, -4, 4.5, 0, 7); g.fill();
+    g.fillStyle = "#d6336c"; g.beginPath(); g.arc(0, -20, 6, 0, 7); g.fill();
+    g.restore();
+  }
+
+  const chainFor = (a, b) => (T.findChains({ a: T.toPos(a), b: T.toPos(b), w: 0.05 }, 5)
+    .sort((p, q) => q.length - p.length)[0] || []);
+
+  if (which === "icon") {
+    g.fillStyle = "#17243a"; g.beginPath(); g.roundRect(0, 0, 512, 512, 110); g.fill();
+    butterfly(256, 240, 150);
+  } else {
+    g.fillStyle = "#07121d"; g.fillRect(0, 0, 1200, 630);
+    const s = drawMap(30, 46, 1140, which === "ap" ? 0.22 : 0.55);
+    if (which !== "ap") drawThread(30, 46, s, chainFor(105, 1969), which === "vr" ? 0.95 : 1);
+    // a band for the words
+    const grd = g.createLinearGradient(0, 330, 0, 630);
+    grd.addColorStop(0, "rgba(7,18,29,0)"); grd.addColorStop(.45, "rgba(7,18,29,.93)"); grd.addColorStop(1, "#07121d");
+    g.fillStyle = grd; g.fillRect(0, 300, 1200, 330);
+    butterfly(96, 92, 72);
+
+    const title = { atlas: "Butterfly Atlas", ap: "AP World History: Modern", vr: "Butterfly Atlas VR" }[which];
+    const sub = {
+      atlas: "Pick two moments in history. Follow the thread between them.",
+      ap: "A free practice exam: 55 stimulus questions, SAQs, a 7-document DBQ, rubrics.",
+      vr: "Stand at the map. Watch cause and effect rise off it. Walk the chain.",
+    }[which];
+    const tag = { atlas: "For kids and teachers · free · no sign-up", ap: "All nine units · scored · print it for class", vr: "WebXR in the Meta Quest browser · no install" }[which];
+
+    // Shrink until it fits: no card should ever run off its own edge.
+    const fit = (text, weight, size, max) => {
+      let px = size;
+      do { g.font = `${weight} ${px}px ${SANS}`; px -= 2; } while (g.measureText(text).width > max && px > 12);
+      return g.font;
+    };
+    const M = 76, W = 1200 - M * 2;
+    g.textAlign = "left";
+    g.fillStyle = "#ffffff"; g.font = fit(title, 800, 92, W);
+    g.fillText(title, M, 452);
+    g.fillStyle = "#f5dd8f"; g.font = fit(sub, 600, 38, W);
+    g.fillText(sub, M, 516);
+    g.fillStyle = "#f06595"; g.font = fit(tag.toUpperCase(), 700, 27, W);
+    g.fillText(tag.toUpperCase(), M, 570);
+    if (which !== "atlas") {
+      const chip = which === "ap" ? "AP KIT" : "VR";
+      g.font = `800 30px ${SANS}`;
+      const w = g.measureText(chip).width + 44;
+      g.fillStyle = "#d6336c"; g.beginPath(); g.roundRect(1200 - w - 60, 52, w, 58, 29); g.fill();
+      g.fillStyle = "#fff"; g.textAlign = "center"; g.fillText(chip, 1200 - 60 - w / 2, 91);
+    }
+  }
+  document.title = "ready";
+</script>

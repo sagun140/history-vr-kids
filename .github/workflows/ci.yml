@@ -1,0 +1,30 @@
+# Every push and pull request: the data has to be sound and all three pages have
+# to actually work in a real browser.
+name: Checks
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: History data — links point at real events and run forward in time
+        run: node check.mjs
+      - name: AP question bank — options, rubrics, answer key spread, atlas links
+        run: node apcheck.mjs
+      - name: Event pages generate cleanly
+        run: node tools/make-pages.mjs
+      - name: Fetch A-Frame so the VR scene can be tested without a CDN
+        run: |
+          npm pack aframe@1.8.0 --silent >/dev/null
+          tar xzf aframe-1.8.0.tgz package/dist/aframe-master.min.js
+          echo "AFRAME_LOCAL=$PWD/package/dist/aframe-master.min.js" >> $GITHUB_ENV
+      - name: All three pages, driven in a real headless browser
+        run: node smoke.mjs

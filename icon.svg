@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Butterfly Atlas">
+  <rect width="64" height="64" rx="14" fill="#17243a"/>
+  <g stroke="#d6336c" stroke-width="2.4" fill="none" stroke-linecap="round">
+    <path d="M32 20v26"/>
+    <path d="M32 24c-7-9-19-8-19 2 0 9 11 12 19 6"/>
+    <path d="M32 24c7-9 19-8 19 2 0 9-11 12-19 6"/>
+  </g>
+  <g fill="#f5dd8f">
+    <path d="M32 24c-6-7-15-6-15 2 0 7 9 9 15 4z" opacity=".92"/>
+    <path d="M32 24c6-7 15-6 15 2 0 7-9 9-15 4z" opacity=".92"/>
+  </g>
+  <g fill="#e8590c">
+    <circle cx="22" cy="28" r="2.2"/><circle cx="42" cy="28" r="2.2"/>
+  </g>
+  <g fill="#4dabf7"><circle cx="26" cy="36" r="1.6"/><circle cx="38" cy="36" r="1.6"/></g>
+  <circle cx="32" cy="18" r="2.6" fill="#d6336c"/>
+</svg>
